@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DCF 資料治理、驗證與發布循環流程 / DCF Governance, Validation & Release Cycle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<!-- Mermaid v11 -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<style>
+:root {
+  --teal-50:   #E1F5EE;
+  --teal-200:  #5DCAA5;
+  --teal-600:  #0F6E56;
+  --teal-800:  #085041;
+  --blue-50:   #E6F1FB;
+  --blue-200:  #85B7EB;
+  --blue-600:  #185FA5;
+  --blue-800:  #0C447C;
+  --purple-50: #EEEDFE;
+  --purple-200:#AFA9EC;
+  --purple-600:#534AB7;
+  --purple-800:#3C3489;
+  --coral-50:  #FAECE7;
+  --coral-200: #F0997B;
+  --coral-600: #993C1D;
+  --amber-50:  #FAEEDA;
+  --amber-200: #EF9F27;
+  --amber-600: #854F0B;
+  --gray-50:   #F1EFE8;
+  --gray-100:  #D3D1C7;
+  --gray-400:  #888780;
+  --gray-700:  #5F5E5A;
+  --gray-900:  #2C2C2A;
+  --bg:        #FAFAF8;
+  --surface:   #FFFFFF;
+  --font:      'DM Sans', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --mono:      'DM Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--gray-900);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* ── Header ── */
+.header {
+  background: var(--teal-800);
+  color: white;
+  padding: 38px 48px 30px;
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  right: -60px; top: -60px;
+  width: 320px; height: 320px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.04);
+  pointer-events: none;
+}
+.header::after {
+  content: '';
+  position: absolute;
+  right: 90px; bottom: -90px;
+  width: 220px; height: 220px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.03);
+  pointer-events: none;
+}
+.header-tag {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--teal-200);
+  margin-bottom: 10px;
+  opacity: 0.95;
+}
+.header h1 {
+  font-size: clamp(20px, 3vw, 28px);
+  font-weight: 500;
+  line-height: 1.25;
+  margin-bottom: 6px;
+}
+.header h1 span {
+  opacity: 0.55;
+  font-weight: 300;
+}
+.header-desc {
+  font-size: 13.5px;
+  color: rgba(255,255,255,0.7);
+  font-weight: 300;
+  margin-top: 10px;
+  max-width: 720px;
+  line-height: 1.6;
+}
+
+/* ── Layout ── */
+.container { max-width: 960px; margin: 0 auto; padding: 40px 32px 80px; }
+
+/* ── Section Accordions ── */
+.section {
+  margin-bottom: 44px;
+  animation: fadeUp 0.4s ease both;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.section:nth-child(1) { animation-delay: 0.04s; }
+.section:nth-child(2) { animation-delay: 0.08s; }
+.section:nth-child(3) { animation-delay: 0.12s; }
+.section:nth-child(4) { animation-delay: 0.16s; }
+.section:nth-child(5) { animation-delay: 0.20s; }
+.section:nth-child(6) { animation-delay: 0.24s; }
+.section:nth-child(7) { animation-delay: 0.28s; }
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+  cursor: pointer;
+  user-select: none;
+}
+.section-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--teal-600);
+  background: var(--teal-50);
+  border: 1px solid var(--teal-200);
+  border-radius: 6px;
+  padding: 3px 9px;
+  letter-spacing: 0.08em;
+  flex-shrink: 0;
+}
+.section-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--gray-900);
+}
+.section-title .en {
+  font-weight: 300;
+  color: var(--gray-400);
+  margin-left: 6px;
+}
+.section-chevron {
+  margin-left: auto;
+  color: var(--gray-400);
+  transition: transform 0.25s;
+  font-size: 18px;
+  line-height: 1;
+}
+.section.collapsed .section-chevron { transform: rotate(-90deg); }
+.section-body {
+  overflow: hidden;
+  transition: max-height 0.35s ease, opacity 0.3s ease;
+  max-height: 5000px;
+  opacity: 1;
+}
+.section.collapsed .section-body { max-height: 0; opacity: 0; }
+
+/* ── Flow Nodes (中/EN 雙語對照卡片) ── */
+.flow { display: flex; flex-direction: column; align-items: center; gap: 0; }
+
+.node {
+  width: 100%;
+  max-width: 600px;
+  border-radius: 10px;
+  padding: 14px 20px;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  position: relative;
+  border: 1px solid transparent;
+}
+.node:hover {
+  transform: translateY(-1.5px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+
+.node.teal   { background: var(--teal-50);   border-color: var(--teal-200);   }
+.node.blue   { background: var(--blue-50);   border-color: var(--blue-200);   }
+.node.purple { background: var(--purple-50); border-color: var(--purple-200); }
+.node.coral  { background: var(--coral-50);  border-color: var(--coral-200);  }
+.node.amber  { background: var(--amber-50);  border-color: var(--amber-200);  }
+.node.gray   { background: var(--gray-50);   border-color: var(--gray-100);  border-radius: 40px; }
+
+.node-zh { font-size: 14px; font-weight: 500; line-height: 1.45; }
+.node-en { font-size: 11.5px; font-weight: 300; margin-top: 2px; line-height: 1.4; opacity: 0.85; }
+
+.node.teal   .node-zh { color: var(--teal-800); }
+.node.teal   .node-en { color: var(--teal-600); }
+.node.blue   .node-zh { color: var(--blue-800); }
+.node.blue   .node-en { color: var(--blue-600); }
+.node.purple .node-zh { color: var(--purple-800); }
+.node.purple .node-en { color: var(--purple-600); }
+.node.coral  .node-zh { color: var(--coral-600); }
+.node.coral  .node-en { color: var(--coral-600); opacity: 0.75; }
+.node.amber  .node-zh { color: var(--amber-600); }
+.node.amber  .node-en { color: var(--amber-600); opacity: 0.75; }
+.node.gray   .node-zh { color: var(--gray-700); font-size: 13.5px; text-align: center; }
+.node.gray   .node-en { color: var(--gray-400); font-size: 11px; text-align: center; }
+
+/* ── Arrow ── */
+.arrow {
+  display: flex;
+  justify-content: center;
+  padding: 6px 0;
+  color: var(--gray-400);
+  font-size: 18px;
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* ── Sub-grid container for child nodes ── */
+.sub-grid {
+  width: 100%;
+  max-width: 600px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 3px 0;
+}
+.sub-grid-3 {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+.sub-node {
+  border-radius: 8px;
+  padding: 11px 14px;
+  border: 1px solid transparent;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.sub-node:hover {
+  transform: translateY(-1.5px);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+}
+.sub-node.teal   { background: var(--teal-50);   border-color: var(--teal-200); }
+.sub-node.blue   { background: var(--blue-50);   border-color: var(--blue-200); }
+.sub-node.purple { background: var(--purple-50); border-color: var(--purple-200); }
+.sub-node.amber  { background: var(--amber-50);  border-color: var(--amber-200); }
+.sub-node.coral  { background: var(--coral-50);  border-color: var(--coral-200); }
+
+.sub-node .node-zh { font-size: 12.5px; font-weight: 500; }
+.sub-node .node-en { font-size: 11px; font-weight: 300; opacity: 0.8; }
+.sub-node.teal   .node-zh { color: var(--teal-800); }
+.sub-node.teal   .node-en { color: var(--teal-600); }
+.sub-node.blue   .node-zh { color: var(--blue-800); }
+.sub-node.blue   .node-en { color: var(--blue-600); }
+.sub-node.purple .node-zh { color: var(--purple-800); }
+.sub-node.purple .node-en { color: var(--purple-600); }
+.sub-node.amber  .node-zh { color: var(--amber-600); }
+.sub-node.amber  .node-en { color: var(--amber-600); opacity: 0.75; }
+.sub-node.coral  .node-zh { color: var(--coral-600); }
+.sub-node.coral  .node-en { color: var(--coral-600); opacity: 0.75; }
+
+/* ── Branch ── */
+.branch {
+  width: 100%;
+  max-width: 600px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.branch-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.branch-label {
+  text-align: center;
+  font-size: 11px;
+  font-family: var(--mono);
+  color: var(--gray-400);
+  margin-bottom: 6px;
+  letter-spacing: 0.06em;
+}
+
+/* ── Full Mermaid View Box ── */
+.mermaid-box {
+  background: white;
+  border: 1px solid var(--gray-100);
+  border-radius: 12px;
+  padding: 24px;
+  overflow: auto;
+  min-height: 500px;
+}
+.mermaid-box .mermaid {
+  min-width: 1280px;
+  display: block;
+}
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  padding: 32px 20px 40px;
+  color: var(--gray-400);
+  font-size: 11.5px;
+  font-family: var(--mono);
+  letter-spacing: 0.06em;
+}
+
+@media (max-width: 640px) {
+  .header { padding: 28px 20px 22px; }
+  .container { padding: 28px 16px 60px; }
+  .sub-grid { grid-template-columns: 1fr; }
+  .sub-grid-3 { grid-template-columns: 1fr; }
+  .branch { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-tag">Dynamic Cycling Fit · Data Governance Specification</div>
+  <h1>DCF 資料治理、驗證與發布循環流程 <span>/ Governance, Validation & Release Cycle</span></h1>
+  <p class="header-desc">
+    適用於新車上市前及既有車款零件改版的資料準備、PIM 入庫、有效騎乘幾何計算、API / App 雙層驗證、正式發布與閉環維護。<br>
+    <span style="opacity:0.65; font-size:12.5px;">Standard Operating Procedure for pre-launch bike and component revision data prep, PIM integration, fit geometry calculations, API/App testing, production sign-off, and closed-loop maintenance.</span>
+  </p>
+</div>
+
+<div class="container">
+
+  <!-- ── Section 01: DCF 資料準備、更新與確認 ── -->
+  <div class="section" id="s1">
+    <div class="section-header" onclick="toggleSection('s1')">
+      <span class="section-num">01</span>
+      <span class="section-title">
+        DCF 資料準備、更新與確認 <span class="en">/ Data Preparation, Updates & PIM Centralization</span>
+      </span>
+      <span class="section-chevron">›</span>
+    </div>
+    <div class="section-body">
+      <div class="flow">
+
+        <!-- Trigger Node -->
+        <div class="node gray">
+          <div class="node-zh">觸發情境：新車上市前或既有車款零件改版</div>
+          <div class="node-en">Trigger: Prior to new bike launch or component revision</div>
+        </div>
+        <div class="arrow">↓</div>
+
+        <!-- S1 & S2 Sub-grid -->
+        <div class="sub-grid">
+          <div class="sub-node blue">
+            <div class="node-zh">S1. R&D 提供／更新車架 Geometry</div>
+            <div class="node-en">R&D: Full-size geometry & engineering updates</div>
+          </div>
+          <div class="sub-node blue">
+            <div class="node-zh">S2. TM 提供 Lineup, BOM 與車種分類</div>
+            <div class="node-en">TM: Lineup & Spec, BOM/parts range, category</div>
+          </div>
+        </div>
+        <div class="arrow">↓</div>
+
+        <!-- S3 Node -->
+        <div class="node blue">
+          <div class="node-zh">S3. 新建或異動資料統一放入 PIM (單一事實來源 SSOT)</div>
+          <div class="node-en">Centralize all bike geometry & BOM specifications into PIM (SSOT)</div>
+        </div>
+        <div class="arrow">↓</div>
+
+        <!-- S4 Node -->
+        <div class="node teal">
+          <div class="node-zh">S4. DCF Team 查看與確認全維度資料</div>
+          <div class="node-en">DCF Team reviews geometry, BOM, components & category impact</div>
+        </div>
+        <div class="arrow">↓</div>
+
+        <!-- D1 Decision -->
+        <div class="node amber">
+          <div class="node-zh">D1. 判斷：資料 OK？</div>
+          <div class="node-en">Decision: Is data verified and approved?</div>
+        </div>
+        <div class="arrow">↓</div>
+
+        <!-- Branches: No / Yes -->
+        <div class="branch">
+          <div class="branch-col">
+            <div class="branch-label">[ 否 / REJECTED ]</div>
+            <div class="sub-grid" style="width:100%; max-width:280px;">
+              <div class="sub-node coral">
+                <div class="node-zh">R1. 退回 R&D 補充修正</div>
+                <div class="node-en">Geometry issue ➔ Return R&D ➔ S3</div>
+              </div>
+              <div class="sub-node coral">
+                <div class="node-zh">T1. 退回 TM 補充修正</div>
+                <div class="node-en">BOM/Spec issue ➔ Return TM ➔ S3</div>
+              </div>
+            </div>
+          </div>
+          <div class="branch-col">
+            <div class="branch-label">[ 是 / APPROVED ]</div>
+            <div class="node teal">
+              <div class="node-zh">S5. 完成新車／改版車款<br>DCF 資料確認 ↓</div>
+              <div class="node-en">Data package approved · Ready for Stage 02</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Section 02: 依車種演算法進行有效騎乘幾何計算與驗證 ── -->
+  <div class="section" id="s2">
+    <div class="section-header" onclick="toggleSection('s2')">
+      <span class="section-num">02</span>
+      <span class="section-title">
+        依車種演算法進行有效騎乘幾何計算與驗證 <span class="en">/ Algorithm-Based Fit Geometry Calculation & Validation</span>
+      </span>
+      <span class="section-chevron">›</span>
+    </div>
+    <div class="section-body">
+      <div class="flow">
+
+        <!-- A1 Node -->
+        <div class="node purple">
+          <div class="node-zh">A1. 依車種分類選擇對應演算法</div>
+          <div class="node-en">Road / Mountain Bike / All-Road & Sport / Gravel / Others</div>
+        </div>
+        <div class="arrow">↓</div>
+
+        <!-- A2 & A3 Sub-grid -->
+        <div class="sub-grid">
+          <div class="sub-node purple">
+            <div class="node-zh">A2. 計算每一尺寸有效騎乘幾何</div>
+            <div class="node-en">Effective Stack, Reach & Coordinates for each size</div>
+          </div>
+          <div class="sub-node purple">
+            <div class="node-zh">A3. 確認每一尺寸皆完成計算</div>
+            <div class="node-en">Verify all sizes generated and computed without gaps</div>
+          </div>
+        </div>
+        <div class="arrow">↓</div>
+
+        <!-- A4 Node -->
+        <div class="node purple">
+          <div class="node-zh">A4. 比對舊版相同車型、相近車型與各尺寸幾何邏輯</div>
+          <div class="node-en">Benchmark against legacy models & size progression logic</div>
+        </div>
+        <div class="arrow">↓</div>
+
+        <!-- A5 & A6 Sub-grid -->
+        <div class="sub-grid">
+          <div class="sub-node purple">
+            <div class="node-zh">A5. 確認關鍵零配件幾何設定</div>
+            <div class="node-en">Handlebar, Stem, Integrated Cockpit, CADEX components</div>
+          </div>
+          <div class="sub-node purple">
+            <div class="node-zh">A6. 確認可調整範圍與限制條件</div>
+            <div class="node-en">Adjustment range, spacer limits & physical bounds</div>
+          </div>
+        </div>
+        <div class="arrow">↓</div>
+
+        <!-- D2 Decision -->
+        <div class="node amber">
+          <div class="node-zh">D2. 判斷：計算與驗證結果 OK？</div>
+          <div class="node-en">Decision: Are calculations & validation results OK?</div>
+        </div>
+        <div class="arrow">↓</div>
+
+        <!-- Branches: No / Yes -->
+        <div class="branch">
+          <div class="branch-col">
+            <div class="branch-label">[ 否 / FAILED ]</div>
+            <div class="node coral">
+              <div class="node-zh">A7. 退回相關資料提供單位<br>補充／修正 ➔ 迴圈回 A1</div>
+              <div class="node-en">Return to data providers · Loop back to A1</div>
+            </div>
+          </div>
+          <div class="branch-col">
+            <div class="branch-label">[ 是 / APPROVED ]</div>
+            <div class="node teal">
+              <div class="node-zh">A8. 完成演算法套用與<br>有效騎乘幾何確認 ↓</div>
+              <div class="node-en">Calculations confirmed · Handover to API vendor</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Section 03: API 製作、App 測試環境與驗證 ── -->
+  <div class="section" id="s3">
+    <div class="section-header" onclick="toggleSection('s3')">
+      <span class="section-num">03</span>
+      <span class="section-title">
+        API 製作、App 測試環境與驗證 <span class="en">/ API Production, App Test Environment & Alpha/Beta Validation</span>
+      </span>
+      <span class="section-chevron">›</span>
+    </div>
+    <div class="section-body">
+      <div class="flow">
+
+        <!-- I1 & I2 Sub-grid -->
+        <div class="sub-grid">
+          <div class="sub-node blue">
+            <div class="node-zh">I1. API 廠商製作／更新 API</div>
+            <div class="node-en">API vendor implements endpoints & calculation logic</div>
+          </div>
+          <div class="sub-node blue">
+            <div class="node-zh">I2. App 廠商建立 Alpha 測試環境</div>
+            <div class="node-en">App vendor deploys staging Alpha test build</div>
+          </div>
+        </div>
+        <div class="arrow">↓</div>
+
+        <!-- I3 Node -->
+        <div class="node amber">
+          <div class="node-zh">I3. DCF Team 執行 Alpha 測試</div>
+          <div class="node-en">Data ingestion, algorithms, cockpit specs, UI & basic flow</div>
+        </div>
+        <div class="arrow">↓</div>
+
+        <!-- D3 Decision -->
+        <div class="node amber">
+          <div class="node-zh">D3. 判斷：Alpha 測試結果 OK？</div>
+          <div class="node-en">Decision: Alpha test results approved?</div>
+        </div>
+        <div class="arrow">↓</div>
+
+        <!-- Branches D3: No / Yes -->
+        <div class="branch">
+          <div class="branch-col">
+            <div class="branch-label">[ 否 / REJECTED ]</div>
+            <div class="sub-grid" style="width:100%; max-width:280px;">
+              <div class="sub-node coral">
+                <div class="node-zh">I4. 回報 API 廠商處理</div>
+                <div class="node-en">API issue ➔ Fix ➔ Loop to I2</div>
+              </div>
+              <div class="sub-node coral">
+                <div class="node-zh">I5. 回報 App 廠商處理</div>
+                <div class="node-en">App UI issue ➔ Fix ➔ Loop to I2</div>
+              </div>
+              <div class="sub-node coral" style="grid-column: 1 / -1;">
+                <div class="node-zh">I6. 退回 TM、CIC 修正 ➔ 回到 A1</div>
+                <div class="node-en">Source data / formula bug ➔ Loop back to A1</div>
+              </div>
+            </div>
+          </div>
+          <div class="branch-col">
+            <div class="branch-label">[ 是 / ADVANCE TO BETA ]</div>
+            <div class="node teal">
+              <div class="node-zh">I7. 建立／開放 Beta 測試環境</div>
+              <div class="node-en">Open Beta environment for broader user trials</div>
+            </div>
+            <div class="arrow">↓</div>
+            <div class="node amber">
+              <div class="node-zh">I8. 更多使用者進行 Beta 測試</div>
+              <div class="node-en">Collect diverse user feedback & edge cases</div>
+            </div>
+          </div>
+        </div>
+        <div class="arrow">↓</div>
+
+        <!-- D4 Decision -->
+        <div class="node amber">
+          <div class="node-zh">D4. 判斷：Beta 測試與驗證結果 OK？</div>
+          <div class="node-en">Decision: Are Beta test & validation results approved?</div>
+        </div>
+        <div class="arrow">↓</div>
+
+        <!-- Branches D4: No / Yes -->
+        <div class="branch">
+          <div class="branch-col">
+            <div class="branch-label">[ 否 / BETA FAILED ]</div>
+            <div class="node coral">
+              <div class="node-zh">I9. 回到問題處理流程<br>修正後重新測試 ➔ 迴圈回 I2</div>
+              <div class="node-en">Issue resolution ➔ Retest · Loop back to I2</div>
+            </div>
+          </div>
+          <div class="branch-col">
+            <div class="branch-label">[ 是 / BETA PASSED ]</div>
+            <div class="node teal">
+              <div class="node-zh">進入 DCF Data Release Approval ↓</div>
+              <div class="node-en">Advance to Release Approval Sign-off ↓</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Section 04: DCF Data Release Approval ── -->
+  <div class="section" id="s4">
+    <div class="section-header" onclick="toggleSection('s4')">
+      <span class="section-num">04</span>
+      <span class="section-title">
+        DCF Data Release Approval (發布審批) <span class="en">/ Multi-Stakeholder Sign-Off & Governance Approval</span>
+      </span>
+      <span class="section-chevron">›</span>
+    </div>
+    <div class="section-body">
+      <div class="flow">
+
+        <!-- R2 ~ R5 Sub-grid -->
+        <div class="sub-grid">
+          <div class="sub-node blue">
+            <div class="node-zh">R2. Data Owner</div>
+            <div class="node-en">Confirms data accuracy & completeness</div>
+          </div>
+          <div class="sub-node blue">
+            <div class="node-zh">R3. Algorithm Owner</div>
+            <div class="node-en">Confirms algorithm rules & suitability</div>
+          </div>
+          <div class="sub-node blue">
+            <div class="node-zh">R4. Product／Business</div>
+            <div class="node-en">Confirms launch markets & commercial dates</div>
+          </div>
+          <div class="sub-node blue">
+            <div class="node-zh">R5. DCF Owner</div>
+            <div class="node-en">Authorizes official production release</div>
+          </div>
+        </div>
+        <div class="arrow">↓</div>
+
+        <!-- D5 Decision -->
+        <div class="node amber">
+          <div class="node-zh">D5. 判斷：Release Approval 通過？</div>
+          <div class="node-en">Decision: Release Approval fully signed off?</div>
+        </div>
+        <div class="arrow">↓</div>
+
+        <!-- Branches D5: No / Yes -->
+        <div class="branch">
+          <div class="branch-col">
+            <div class="branch-label">[ 否 / REJECTED ]</div>
+            <div class="sub-grid" style="width:100%; max-width:280px;">
+              <div class="sub-node coral">
+                <div class="node-zh">資料問題 ➔ 退回 S4</div>
+                <div class="node-en">Data flaw ➔ Return to S4 review</div>
+              </div>
+              <div class="sub-node coral">
+                <div class="node-zh">演算法/幾何 ➔ 退回 A1</div>
+                <div class="node-en">Algorithm flaw ➔ Return to A1</div>
+              </div>
+              <div class="sub-node coral" style="grid-column: 1 / -1;">
+                <div class="node-zh">API／App 問題 ➔ 退回 I2</div>
+                <div class="node-en">Technical bug ➔ Return to I2 testing</div>
+              </div>
+            </div>
+          </div>
+          <div class="branch-col">
+            <div class="branch-label">[ 是 / APPROVED ]</div>
+            <div class="node teal">
+              <div class="node-zh">進入 DCF Production Database 發布 ↓</div>
+              <div class="node-en">Authorized for live production deployment ↓</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Section 05: 發布至 DCF Production Database ── -->
+  <div class="section" id="s5">
+    <div class="section-header" onclick="toggleSection('s5')">
+      <span class="section-num">05</span>
+      <span class="section-title">
+        發布至 DCF Production Database <span class="en">/ Production Release, Synchronization & Audit Trail</span>
+      </span>
+      <span class="section-chevron">›</span>
+    </div>
+    <div class="section-body">
+      <div class="flow">
+
+        <!-- P5A Node -->
+        <div class="node teal">
+          <div class="node-zh">P5A. 發布車架 Geometry、零配件、規則與版本</div>
+          <div class="node-en">Write geometry, BOM, algorithm rules & release version to DB</div>
+        </div>
+        <div class="arrow">↓</div>
+
+        <!-- P5B ~ P5D Sub-grid -->
+        <div class="sub-grid sub-grid-3">
+          <div class="sub-node teal">
+            <div class="node-zh">P5B. 生效日不得晚於上市日</div>
+            <div class="node-en">Effective date <= Product launch date</div>
+          </div>
+          <div class="sub-node teal">
+            <div class="node-zh">P5C. 同步更新 API/App/Web 快取</div>
+            <div class="node-en">Proactive global cache invalidation</div>
+          </div>
+          <div class="sub-node teal">
+            <div class="node-zh">P5D. 完整 Audit Trail 與回溯能力</div>
+            <div class="node-en">Audit trail, change logs & 1-click rollback</div>
+          </div>
+        </div>
+        <div class="arrow">↓</div>
+
+        <!-- Advance to M1 -->
+        <div class="node gray" style="background:#f1f5f9; border: 1px dashed var(--teal-600); max-width:480px;">
+          <div class="node-zh" style="color:var(--teal-800);">正式上線 ➔ 進入 06｜上市後監控與持續維護</div>
+          <div class="node-en" style="color:var(--teal-600);">Production deployment live · Transition to Post-Launch Operations</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Section 06: 上市後監控與持續維護 ── -->
+  <div class="section" id="s6">
+    <div class="section-header" onclick="toggleSection('s6')">
+      <span class="section-num">06</span>
+      <span class="section-title">
+        上市後監控與持續維護 <span class="en">/ Post-Launch Monitoring, Triage & Continuous Feedback Loops</span>
+      </span>
+      <span class="section-chevron">›</span>
+    </div>
+    <div class="section-body">
+      <div class="flow">
+
+        <!-- M1 & M2 Sub-grid -->
+        <div class="sub-grid">
+          <div class="sub-node teal">
+            <div class="node-zh">M1. 持續蒐集門市/Fitter回饋與例外案件</div>
+            <div class="node-en">Field feedback, fitter reports, outliers & bugs</div>
+          </div>
+          <div class="sub-node teal">
+            <div class="node-zh">M2. 問題精準分類 (資料/幾何/演算法/App)</div>
+            <div class="node-en">Data, Geometry, BOM, Algorithm, API, App triage</div>
+          </div>
+        </div>
+        <div class="arrow">↓</div>
+
+        <!-- D6 Decision -->
+        <div class="node amber">
+          <div class="node-zh">D6. 判斷：是否需要更新／修正？</div>
+          <div class="node-en">Decision: Is update, fix or tuning required?</div>
+        </div>
+        <div class="arrow">↓</div>
+
+        <!-- Branches D6: No / Yes -->
+        <div class="branch">
+          <div class="branch-col">
+            <div class="branch-label">[ 否 / NO FIX NEEDED ]</div>
+            <div class="node gray">
+              <div class="node-zh">M3. 持續監控與定期檢視<br>➔ 循環回 M1</div>
+              <div class="node-en">Routine monitoring & periodic review ➔ M1</div>
+            </div>
+          </div>
+          <div class="branch-col">
+            <div class="branch-label">[ 是 / TRIGGER CLOSED LOOP ]</div>
+            <div class="sub-grid" style="width:100%; max-width:280px;">
+              <div class="sub-node coral">
+                <div class="node-zh">資料/配置異動 ➔ 回到 S1</div>
+                <div class="node-en">Data/BOM revision ➔ Loop back to S1</div>
+              </div>
+              <div class="sub-node coral">
+                <div class="node-zh">演算法/幾何問題 ➔ 回到 A1</div>
+                <div class="node-en">Algorithm flaw ➔ Loop back to A1</div>
+              </div>
+              <div class="sub-node coral" style="grid-column: 1 / -1;">
+                <div class="node-zh">API／App／Web 問題 ➔ 回到 I2</div>
+                <div class="node-en">Software/Cache bug ➔ Loop back to I2</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Section 07: 全流程 Mermaid 邏輯架構圖 ── -->
+  <div class="section" id="s7">
+    <div class="section-header" onclick="toggleSection('s7')">
+      <span class="section-num">07</span>
+      <span class="section-title">
+        全流程架構圖 <span class="en">/ Mermaid Complete Architecture Flowchart</span>
+      </span>
+      <span class="section-chevron">›</span>
+    </div>
+    <div class="section-body">
+      <div class="mermaid-box">
+        <div class="mermaid">
+flowchart TD
+    START([觸發情境：新車上市前<br/>或既有車款零件改版]) --> S1
+
+    subgraph P1[01｜DCF 資料準備、更新與確認]
+      direction TD
+      S1[R&D 提供／更新<br/>全尺寸車架 Geometry<br/>及適用的工程設定異動]
+      S2[TM 提供／更新<br/>C1. Lineup & Spec<br/>C2. BOM／指定零配件與設定範圍<br/>C3. 車種等級分類與使用情境]
+      S3[新建或異動資料統一放入 PIM]
+      S4[DCF Team 查看與確認<br/>Geometry、Lineup & Spec、BOM、零配件、車種分類<br/>整車搭配原則與異動影響]
+      D1{資料 OK？}
+      R1[退回 R&D 補充／修正]
+      T1[退回 TM 補充／修正]
+
+      S1 --> S2 --> S3 --> S4 --> D1
+      D1 -- 否：Geometry／工程問題 --> R1 --> S3
+      D1 -- 否：Spec／BOM／零配件問題 --> T1 --> S3
+    end
+
+    D1 -- 是 --> S5[完成新車／改版車款<br/>DCF 資料確認]
+
+    subgraph P2[02｜依車種演算法進行有效騎乘幾何計算與驗證]
+      direction TD
+      A1[依車種分類選擇對應演算法<br/>Road／MTB／All-Road／Gravel]
+      A2[計算每一個車架尺寸的<br/>有效騎乘幾何]
+      A3[確認每一尺寸皆已建立<br/>並完成計算]
+      A4[比對舊版相同車型、相近車型<br/>及幾何邏輯合理性]
+      A5[確認關鍵零配件幾何設定<br/>Handlebar／Stem／一體把／CADEX]
+      A6[確認可調整範圍<br/>與例外／限制條件]
+      D2{計算與驗證結果 OK？}
+      A7[退回相關資料提供單位<br/>補充／修正]
+
+      S5 --> A1 --> A2 --> A3 --> A4 --> A5 --> A6 --> D2
+      D2 -- 否 --> A7 --> A1
+    end
+
+    D2 -- 是 --> A8[完成演算法套用與<br/>有效騎乘幾何確認]
+
+    subgraph P3[03｜API 製作、App 測試環境與驗證]
+      direction TD
+      I1[API 廠商製作／更新 API]
+      I2[App 廠商建立 Alpha 測試環境]
+      I3[DCF Team 執行 Alpha 測試<br/>資料帶入、演算法、幾何、零件、UI 串接]
+      D3{Alpha 測試結果 OK？}
+      I4[回報 API 廠商處理]
+      I5[回報 App 廠商處理]
+      I6[DCF Team 釐清後退回<br/>TM、CIC 修正]
+      I7[建立／開放 Beta 測試環境]
+      I8[更多使用者進行 Beta 測試<br/>蒐集問題回饋]
+      D4{Beta 測試與驗證結果 OK？}
+      I9[回到問題處理與修正流程<br/>修正後重新測試]
+
+      A8 --> I1 --> I2 --> I3 --> D3
+      D3 -- 否：API／計算問題 --> I4 --> I2
+      D3 -- 否：App 顯示問題 --> I5 --> I2
+      D3 -- 否：原始資料／演算法問題 --> I6 --> A1
+      D3 -- 是 --> I7 --> I8 --> D4
+      D4 -- 否 --> I9 --> I2
+    end
+
+    D4 -- 是 --> R2
+
+    subgraph P4[04｜DCF Data Release Approval]
+      direction TD
+      R2[Data Owner 確認資料正確、完整]
+      R3[Algorithm Owner 確認規則適用]
+      R4[Product／Business 確認上市範圍與時程]
+      R5[DCF Owner 核准正式發布]
+      D5{Release Approval 通過？}
+
+      R2 --> R3 --> R4 --> R5 --> D5
+      D5 -- 否：資料問題 --> S4
+      D5 -- 否：演算法／幾何問題 --> A1
+      D5 -- 否：API／App／測試問題 --> I2
+    end
+
+    D5 -- 是 --> P5A
+
+    subgraph P5[05｜發布至 DCF Production Database]
+      direction TD
+      P5A[發布車架 Geometry、零配件與設定範圍<br/>車種演算法規則、有效幾何結果與版號]
+      P5B[確認生效日不得晚於產品上市日]
+      P5C[與 API／App／Web 同步更新或更新快取]
+      P5D[保留完整 Audit Trail 與回溯能力]
+
+      P5A --> P5B --> P5C --> P5D
+    end
+
+    P5D --> M1
+
+    subgraph P6[06｜上市後監控與持續維護]
+      direction TD
+      M1[正式上線後持續蒐集門市/Fitter回饋<br/>例外案件、資料錯誤與改善需求]
+      M2[問題分類：資料／Geometry／BOM／演算法／App]
+      D6{是否需要更新／修正？}
+      M3[持續監控與定期檢視]
+
+      M1 --> M2 --> D6
+      D6 -- 否 --> M3 --> M1
+      D6 -- 是：資料或配置異動 --> S1
+      D6 -- 是：演算法／幾何問題 --> A1
+      D6 -- 是：API／App／Web 問題 --> I2
+    end
+
+    classDef start fill:#123B5D,stroke:#123B5D,color:#ffffff,stroke-width:2px;
+    classDef data fill:#E8F2FB,stroke:#2D6E9E,color:#173B55,stroke-width:1.5px;
+    classDef algo fill:#F1EDFF,stroke:#7659A6,color:#3B285B,stroke-width:1.5px;
+    classDef test fill:#FFF3DB,stroke:#B7791F,color:#5F3A09,stroke-width:1.5px;
+    classDef approval fill:#FDEBEC,stroke:#B74259,color:#6B2333,stroke-width:1.5px;
+    classDef release fill:#E8F7EF,stroke:#2D8A5A,color:#17482E,stroke-width:1.5px;
+    classDef monitor fill:#F3F5F7,stroke:#697785,color:#263440,stroke-width:1.5px;
+    classDef decision fill:#FFF7C7,stroke:#AD8A00,color:#5E4B00,stroke-width:2px;
+    classDef return fill:#FDEBEC,stroke:#B74259,color:#6B2333,stroke-width:1.2px;
+
+    class START start;
+    class S1,S2,S3,S4,S5 data;
+    class A1,A2,A3,A4,A5,A6,A8 algo;
+    class I1,I2,I3,I7,I8 test;
+    class R2,R3,R4,R5 approval;
+    class P5A,P5B,P5C,P5D release;
+    class M1,M2,M3 monitor;
+    class D1,D2,D3,D4,D5,D6 decision;
+    class R1,T1,A7,I4,I5,I6,I9 return;
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  DCF Data Governance, Validation & Release Cycle · Dynamic Cycling Fit · Standard Operating Procedure
+</div>
+
+<script>
+// Section Accordion Toggle
+function toggleSection(id) {
+  document.getElementById(id).classList.toggle('collapsed');
+}
+
+// Initialize Mermaid v11
+mermaid.initialize({
+  startOnLoad: true,
+  theme: "base",
+  securityLevel: "loose",
+  flowchart: {
+    htmlLabels: true,
+    curve: "basis",
+    useMaxWidth: false
+  },
+  themeVariables: {
+    fontFamily: "'DM Sans', 'Noto Sans TC', sans-serif",
+    fontSize: "13px"
+  }
+});
+</script>
+</body>
+</html>
