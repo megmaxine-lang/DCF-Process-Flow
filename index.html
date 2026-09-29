@@ -596,35 +596,6 @@ body {
     </div>
   </div>
 
-        <!-- D4 Decision -->
-        <div class="node amber">
-          <div class="node-zh">D4. 判斷：Beta 測試與驗證結果 OK？</div>
-          <div class="node-en">Decision: Are Beta test & validation results approved?</div>
-        </div>
-        <div class="arrow">↓</div>
-
-        <!-- Branches D4: No / Yes -->
-        <div class="branch">
-          <div class="branch-col">
-            <div class="branch-label">[ 否 / BETA FAILED ]</div>
-            <div class="node coral">
-              <div class="node-zh">I9. 回到問題處理流程<br>修正後重新測試 ➔ 迴圈回 I2</div>
-              <div class="node-en">Issue resolution ➔ Retest · Loop back to I2</div>
-            </div>
-          </div>
-          <div class="branch-col">
-            <div class="branch-label">[ 是 / BETA PASSED ]</div>
-            <div class="node teal">
-              <div class="node-zh">進入 DCF Data Release Approval ↓</div>
-              <div class="node-en">Advance to Release Approval Sign-off ↓</div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
   <!-- ── Section 04: DCF Data Release Approval ── -->
   <div class="section" id="s4">
     <div class="section-header" onclick="toggleSection('s4')">
@@ -824,12 +795,12 @@ flowchart TD
 
     subgraph P1[01｜DCF 資料準備、更新與確認]
       direction TD
-      S1[R&D 提供／更新<br/>全尺寸車架 Geometry<br/>及適用的工程設定異動]
+      S1[CIC 提供／更新<br/>全尺寸車架 Geometry<br/>及適用的工程設定異動]
       S2[TM 提供／更新<br/>C1. Lineup & Spec<br/>C2. BOM／指定零配件與設定範圍<br/>C3. 車種等級分類與使用情境]
       S3[新建或異動資料統一放入 PIM]
       S4[DCF Team 查看與確認<br/>Geometry、Lineup & Spec、BOM、零配件、車種分類<br/>整車搭配原則與異動影響]
       D1{資料 OK？}
-      R1[退回 R&D 補充／修正]
+      R1[退回 CIC 補充／修正]
       T1[退回 TM 補充／修正]
 
       S1 --> S2 --> S3 --> S4 --> D1
@@ -858,8 +829,8 @@ flowchart TD
 
     subgraph P3[03｜API 製作、App 測試環境與驗證]
       direction TD
-      I1[API 廠商製作／更新 API]
-      I2[App 廠商建立 Alpha 測試環境]
+      I1[API 廠商(Hypersolid)製作／更新 API]
+      I2[App 廠商(BCT)建立 Alpha 測試環境]
       I3[DCF Team 執行 Alpha 測試<br/>資料帶入、演算法、幾何、零件、UI 串接]
       D3{Alpha 測試結果 OK？}
       I4[回報 API 廠商處理]
