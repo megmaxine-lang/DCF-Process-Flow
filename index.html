@@ -13,14 +13,10 @@
   --teal-200:  #5DCAA5;
   --teal-600:  #0F6E56;
   --teal-800:  #085041;
-  --blue-50:   #E6F1FB;
-  --blue-200:  #85B7EB;
-  --blue-600:  #185FA5;
-  --blue-800:  #0C447C;
-  --purple-50: #EEEDFE;
-  --purple-200:#AFA9EC;
-  --purple-600:#534AB7;
-  --purple-800:#3C3489;
+  --blue-50:   #F0F4F8;
+  --blue-200:  #B8C9DC;
+  --blue-600:  #3A5E85;
+  --blue-800:  #1E3A5F;
   --coral-50:  #FAECE7;
   --coral-200: #F0997B;
   --coral-600: #993C1D;
@@ -255,7 +251,7 @@ body {
   padding: 8px 24px 28px;
 }
 
-/* ── Flow Nodes ── */
+/* ── Flow Nodes (語義化統一樣式) ── */
 .flow { display: flex; flex-direction: column; align-items: center; gap: 0; }
 
 .node {
@@ -272,26 +268,24 @@ body {
   box-shadow: 0 6px 18px rgba(0,0,0,0.06);
 }
 
-.node.teal   { background: var(--teal-50);   border-color: var(--teal-200);   }
-.node.blue   { background: var(--blue-50);   border-color: var(--blue-200);   }
-.node.purple { background: var(--purple-50); border-color: var(--purple-200); }
-.node.coral  { background: var(--coral-50);  border-color: var(--coral-200);  }
-.node.amber  { background: var(--amber-50);  border-color: var(--amber-200);  }
-.node.gray   { background: var(--gray-50);   border-color: var(--gray-100);  border-radius: 40px; }
+/* 動作: 藍灰 / 決策: 琥珀黃 / 通過與發布: 綠 / 退回: 紅 / 狀態起訖: 灰 */
+.node.blue   { background: var(--blue-50);  border-color: var(--blue-200);  }
+.node.amber  { background: var(--amber-50); border-color: var(--amber-200); }
+.node.teal   { background: var(--teal-50);  border-color: var(--teal-200);  }
+.node.coral  { background: var(--coral-50); border-color: var(--coral-200); }
+.node.gray   { background: var(--gray-50);  border-color: var(--gray-100);  border-radius: 40px; }
 
 .node-zh { font-size: 14px; font-weight: 500; line-height: 1.45; }
 .node-en { font-size: 11.5px; font-weight: 300; margin-top: 2px; line-height: 1.4; opacity: 0.85; }
 
-.node.teal   .node-zh { color: var(--teal-800); }
-.node.teal   .node-en { color: var(--teal-600); }
 .node.blue   .node-zh { color: var(--blue-800); }
 .node.blue   .node-en { color: var(--blue-600); }
-.node.purple .node-zh { color: var(--purple-800); }
-.node.purple .node-en { color: var(--purple-600); }
-.node.coral  .node-zh { color: var(--coral-600); }
-.node.coral  .node-en { color: var(--coral-600); opacity: 0.75; }
 .node.amber  .node-zh { color: var(--amber-600); }
-.node.amber  .node-en { color: var(--amber-600); opacity: 0.75; }
+.node.amber  .node-en { color: var(--amber-600); opacity: 0.85; }
+.node.teal   .node-zh { color: var(--teal-800); }
+.node.teal   .node-en { color: var(--teal-600); }
+.node.coral  .node-zh { color: var(--coral-600); }
+.node.coral  .node-en { color: var(--coral-600); opacity: 0.8; }
 .node.gray   .node-zh { color: var(--gray-700); font-size: 13.5px; text-align: center; }
 .node.gray   .node-en { color: var(--gray-400); font-size: 11px; text-align: center; }
 
@@ -328,24 +322,21 @@ body {
   transform: translateY(-1.5px);
   box-shadow: 0 4px 14px rgba(0,0,0,0.05);
 }
-.sub-node.teal   { background: var(--teal-50);   border-color: var(--teal-200); }
-.sub-node.blue   { background: var(--blue-50);   border-color: var(--blue-200); }
-.sub-node.purple { background: var(--purple-50); border-color: var(--purple-200); }
-.sub-node.amber  { background: var(--amber-50);  border-color: var(--amber-200); }
-.sub-node.coral  { background: var(--coral-50);  border-color: var(--coral-200); }
+.sub-node.blue  { background: var(--blue-50);  border-color: var(--blue-200);  }
+.sub-node.amber { background: var(--amber-50); border-color: var(--amber-200); }
+.sub-node.teal  { background: var(--teal-50);  border-color: var(--teal-200);  }
+.sub-node.coral { background: var(--coral-50); border-color: var(--coral-200); }
 
 .sub-node .node-zh { font-size: 12.5px; font-weight: 500; }
 .sub-node .node-en { font-size: 11px; font-weight: 300; opacity: 0.8; }
-.sub-node.teal   .node-zh { color: var(--teal-800); }
-.sub-node.teal   .node-en { color: var(--teal-600); }
-.sub-node.blue   .node-zh { color: var(--blue-800); }
-.sub-node.blue   .node-en { color: var(--blue-600); }
-.sub-node.purple .node-zh { color: var(--purple-800); }
-.sub-node.purple .node-en { color: var(--purple-600); }
-.sub-node.amber  .node-zh { color: var(--amber-600); }
-.sub-node.amber  .node-en { color: var(--amber-600); opacity: 0.75; }
-.sub-node.coral  .node-zh { color: var(--coral-600); }
-.sub-node.coral  .node-en { color: var(--coral-600); opacity: 0.75; }
+.sub-node.blue  .node-zh { color: var(--blue-800); }
+.sub-node.blue  .node-en { color: var(--blue-600); }
+.sub-node.amber .node-zh { color: var(--amber-600); }
+.sub-node.amber .node-en { color: var(--amber-600); opacity: 0.85; }
+.sub-node.teal  .node-zh { color: var(--teal-800); }
+.sub-node.teal  .node-en { color: var(--teal-600); }
+.sub-node.coral .node-zh { color: var(--coral-600); }
+.sub-node.coral .node-en { color: var(--coral-600); opacity: 0.8; }
 
 /* ── Branch ── */
 .branch {
@@ -440,12 +431,14 @@ body {
       <div class="section-body">
         <div class="flow">
 
+          <!-- Trigger Node -->
           <div class="node gray">
             <div class="node-zh">觸發情境：新車上市前或既有車款零件改版</div>
             <div class="node-en">Trigger: Prior to new bike launch or component revision</div>
           </div>
           <div class="arrow">↓</div>
 
+          <!-- S1 & S2 Sub-grid -->
           <div class="sub-grid">
             <div class="sub-node blue">
               <div class="node-zh">S1. CIC 提供／更新車架 Geometry(FTD)</div>
@@ -458,24 +451,28 @@ body {
           </div>
           <div class="arrow">↓</div>
 
+          <!-- S3 Node -->
           <div class="node blue">
             <div class="node-zh">S3. 新建或異動資料統一放入 PIM </div>
             <div class="node-en">Centralize all bike geometry & BOM specifications into PIM </div>
           </div>
           <div class="arrow">↓</div>
 
-          <div class="node teal">
+          <!-- S4 Node -->
+          <div class="node blue">
             <div class="node-zh">S4. DCF Team 查看與確認全維度資料</div>
             <div class="node-en">DCF Team reviews geometry, BOM, components & category impact</div>
           </div>
           <div class="arrow">↓</div>
 
+          <!-- D1 Decision -->
           <div class="node amber">
             <div class="node-zh">D1. 判斷：資料 OK？</div>
             <div class="node-en">Decision: Is data verified and approved?</div>
           </div>
           <div class="arrow">↓</div>
 
+          <!-- Branches D1: No / Yes -->
           <div class="branch">
             <div class="branch-col">
               <div class="branch-label">[ 否 / REJECTED ]</div>
@@ -517,36 +514,36 @@ body {
       <div class="section-body">
         <div class="flow">
 
-          <div class="node purple">
+          <div class="node blue">
             <div class="node-zh">A1. 依車種分類選擇對應演算法</div>
             <div class="node-en">Road / Mountain Bike / All-Road & Sport / Gravel / Others</div>
           </div>
           <div class="arrow">↓</div>
 
           <div class="sub-grid">
-            <div class="sub-node purple">
+            <div class="sub-node blue">
               <div class="node-zh">A2. 計算每一尺寸有效騎乘幾何</div>
               <div class="node-en">Effective Stack, Reach & Coordinates for each size</div>
             </div>
-            <div class="sub-node purple">
+            <div class="sub-node blue">
               <div class="node-zh">A3. 確認每一尺寸皆完成計算</div>
               <div class="node-en">Verify all sizes generated and computed without gaps</div>
             </div>
           </div>
           <div class="arrow">↓</div>
 
-          <div class="node purple">
+          <div class="node blue">
             <div class="node-zh">A4. 比對舊版相同車型、相近車型與各尺寸幾何邏輯</div>
             <div class="node-en">Benchmark against legacy models & size progression logic</div>
           </div>
           <div class="arrow">↓</div>
 
           <div class="sub-grid">
-            <div class="sub-node purple">
+            <div class="sub-node blue">
               <div class="node-zh">A5. 確認關鍵零配件幾何設定</div>
               <div class="node-en">Handlebar, Stem, Integrated Cockpit, CADEX components</div>
             </div>
-            <div class="sub-node purple">
+            <div class="sub-node blue">
               <div class="node-zh">A6. 確認可調整範圍與限制條件</div>
               <div class="node-en">Adjustment range, spacer limits & physical bounds</div>
             </div>
@@ -606,7 +603,7 @@ body {
           </div>
           <div class="arrow">↓</div>
 
-          <div class="node amber">
+          <div class="node blue">
             <div class="node-zh">I3. DCF Team 執行 Alpha 測試</div>
             <div class="node-en">Data ingestion, algorithms, cockpit specs, UI & basic flow</div>
           </div>
@@ -643,7 +640,7 @@ body {
                 <div class="node-en">Open Beta environment for broader user trials</div>
               </div>
               <div class="arrow">↓</div>
-              <div class="node amber">
+              <div class="node blue">
                 <div class="node-zh">I8. 更多使用者進行 Beta 測試</div>
                 <div class="node-en">Collect diverse user feedback & edge cases</div>
               </div>
@@ -809,11 +806,11 @@ body {
         <div class="flow">
 
           <div class="sub-grid">
-            <div class="sub-node teal">
+            <div class="sub-node blue">
               <div class="node-zh">M1. 持續蒐集門市/Fitter回饋與例外案件</div>
               <div class="node-en">Field feedback, fitter reports, outliers & bugs</div>
             </div>
-            <div class="sub-node teal">
+            <div class="sub-node blue">
               <div class="node-zh">M2. 問題精準分類 (資料/幾何/演算法/App)</div>
               <div class="node-en">Data, Geometry, BOM, Algorithm, API, App triage</div>
             </div>
