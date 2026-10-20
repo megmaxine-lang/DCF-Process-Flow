@@ -33,9 +33,9 @@
   --font:      'DM Sans', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --mono:      'DM Mono', monospace;
 }
-
+ 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+ 
 body {
   font-family: var(--font);
   background: var(--bg);
@@ -44,7 +44,7 @@ body {
   overflow-x: hidden;
   line-height: 1.6;
 }
-
+ 
 /* ── Header ── */
 .header {
   background: var(--teal-800);
@@ -98,7 +98,7 @@ body {
   max-width: 720px;
   line-height: 1.6;
 }
-
+ 
 /* ── Sticky Control Toolbar ── */
 .toolbar-sticky {
   position: sticky;
@@ -168,10 +168,10 @@ body {
   background: var(--gray-50);
   border-color: var(--gray-400);
 }
-
+ 
 /* ── Layout ── */
 .container { max-width: 960px; margin: 0 auto; padding: 32px 32px 80px; }
-
+ 
 /* ── Section Accordions ── */
 .section {
   margin-bottom: 26px;
@@ -186,7 +186,7 @@ body {
   border-color: var(--teal-200);
   box-shadow: 0 4px 16px rgba(0,0,0,0.03);
 }
-
+ 
 .section-header {
   display: flex;
   align-items: center;
@@ -235,7 +235,7 @@ body {
 .section.collapsed .section-chevron {
   transform: rotate(-90deg);
 }
-
+ 
 .section-body-wrapper {
   display: grid;
   grid-template-rows: 1fr;
@@ -250,10 +250,10 @@ body {
   overflow: hidden;
   padding: 8px 24px 28px;
 }
-
+ 
 /* ── Flow Nodes (語義化統一樣式) ── */
 .flow { display: flex; flex-direction: column; align-items: center; gap: 0; }
-
+ 
 .node {
   width: 100%;
   max-width: 600px;
@@ -267,17 +267,17 @@ body {
   transform: translateY(-1.5px);
   box-shadow: 0 6px 18px rgba(0,0,0,0.06);
 }
-
+ 
 /* 動作: 藍灰 / 決策: 琥珀黃 / 通過與發布: 綠 / 退回: 紅 / 狀態起訖: 灰 */
 .node.blue   { background: var(--blue-50);  border-color: var(--blue-200);  }
 .node.amber  { background: var(--amber-50); border-color: var(--amber-200); }
 .node.teal   { background: var(--teal-50);  border-color: var(--teal-200);  }
 .node.coral  { background: var(--coral-50); border-color: var(--coral-200); }
 .node.gray   { background: var(--gray-50);  border-color: var(--gray-100);  border-radius: 40px; }
-
+ 
 .node-zh { font-size: 14px; font-weight: 500; line-height: 1.45; }
 .node-en { font-size: 11.5px; font-weight: 300; margin-top: 2px; line-height: 1.4; opacity: 0.85; }
-
+ 
 .node.blue   .node-zh { color: var(--blue-800); }
 .node.blue   .node-en { color: var(--blue-600); }
 .node.amber  .node-zh { color: var(--amber-600); }
@@ -288,7 +288,7 @@ body {
 .node.coral  .node-en { color: var(--coral-600); opacity: 0.8; }
 .node.gray   .node-zh { color: var(--gray-700); font-size: 13.5px; text-align: center; }
 .node.gray   .node-en { color: var(--gray-400); font-size: 11px; text-align: center; }
-
+ 
 /* ── Arrow ── */
 .arrow {
   display: flex;
@@ -299,7 +299,7 @@ body {
   line-height: 1;
   pointer-events: none;
 }
-
+ 
 /* ── Sub-grid container for child nodes ── */
 .sub-grid {
   width: 100%;
@@ -326,7 +326,7 @@ body {
 .sub-node.amber { background: var(--amber-50); border-color: var(--amber-200); }
 .sub-node.teal  { background: var(--teal-50);  border-color: var(--teal-200);  }
 .sub-node.coral { background: var(--coral-50); border-color: var(--coral-200); }
-
+ 
 .sub-node .node-zh { font-size: 12.5px; font-weight: 500; }
 .sub-node .node-en { font-size: 11px; font-weight: 300; opacity: 0.8; }
 .sub-node.blue  .node-zh { color: var(--blue-800); }
@@ -337,7 +337,7 @@ body {
 .sub-node.teal  .node-en { color: var(--teal-600); }
 .sub-node.coral .node-zh { color: var(--coral-600); }
 .sub-node.coral .node-en { color: var(--coral-600); opacity: 0.8; }
-
+ 
 /* ── Branch ── */
 .branch {
   width: 100%;
@@ -359,7 +359,34 @@ body {
   margin-bottom: 6px;
   letter-spacing: 0.06em;
 }
-
+ 
+/* ── 07 輔助區塊標題 ── */
+.flow-divider {
+  width: 100%;
+  max-width: 600px;
+  margin: 26px 0 8px;
+  padding-top: 18px;
+  border-top: 1px dashed var(--gray-100);
+  text-align: center;
+  font-size: 11px;
+  font-family: var(--mono);
+  color: var(--gray-400);
+  letter-spacing: 0.06em;
+}
+.link-tag {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  color: var(--amber-600);
+  background: var(--amber-50);
+  border: 1px solid var(--amber-200);
+  border-radius: 4px;
+  padding: 0 6px;
+  margin-left: 4px;
+  vertical-align: 1px;
+}
+ 
 /* ── Footer ── */
 .footer {
   text-align: center;
@@ -369,7 +396,7 @@ body {
   font-family: var(--mono);
   letter-spacing: 0.06em;
 }
-
+ 
 @media (max-width: 768px) {
   .header { padding: 28px 20px 22px; }
   .toolbar-sticky { padding: 8px 16px; }
@@ -384,16 +411,16 @@ body {
 </style>
 </head>
 <body>
-
+ 
 <div class="header">
   <div class="header-tag">Dynamic Cycling Fit · Data Governance Specification</div>
   <h1>DCF 資料治理、驗證與發布循環流程 <span>/ Governance, Validation & Release Process Flow Chart</span></h1>
   <p class="header-desc">
-    適用於新車上市前及既有車款零件改版的資料準備、PIM 資料建立、有效騎乘幾何計算、API / App 雙層驗證、正式發布與閉環維護<br>
-    <span style="opacity:0.65; font-size:12.5px;">Standard Operating Procedure for pre-launch bike and component revision data prep, PIM integration, fit geometry calculations, API/App testing, production sign-off, and closed-loop maintenance.</span>
+    適用於新車上市前及既有車款零件改版的資料準備、PIM 資料建立、有效騎乘幾何計算、API / App 雙層驗證、正式發布與閉環維護；並以 07 規範所有 App 廠商（BCT）工作的核准、驗收與結算<br>
+    <span style="opacity:0.65; font-size:12.5px;">Standard Operating Procedure for pre-launch bike and component revision data prep, PIM integration, fit geometry calculations, API/App testing, production sign-off, and closed-loop maintenance. Stage 07 governs approval, acceptance and settlement of all App vendor (BCT) work.</span>
   </p>
 </div>
-
+ 
 <!-- ── 快捷操作與懸浮跳轉導覽列 ── -->
 <div class="toolbar-sticky">
   <div class="toolbar-inner">
@@ -404,6 +431,7 @@ body {
       <button class="nav-pill" onclick="jumpToSection('s4')">04 審批簽核</button>
       <button class="nav-pill" onclick="jumpToSection('s5')">05 發布上線</button>
       <button class="nav-pill" onclick="jumpToSection('s6')">06 持續監控</button>
+      <button class="nav-pill" onclick="jumpToSection('s7')">07 BCT 變更管理</button>
     </div>
     <div class="toolbar-actions">
       <button class="btn-action" onclick="expandAllSections()">
@@ -415,9 +443,9 @@ body {
     </div>
   </div>
 </div>
-
+ 
 <div class="container">
-
+ 
   <!-- ── Section 01: DCF 資料準備、更新與確認 ── -->
   <div class="section" id="s1">
     <div class="section-header" onclick="toggleSection('s1')">
@@ -430,14 +458,14 @@ body {
     <div class="section-body-wrapper">
       <div class="section-body">
         <div class="flow">
-
+ 
           <!-- Trigger Node -->
           <div class="node gray">
             <div class="node-zh">觸發情境：新車上市前或既有車款零件改版</div>
             <div class="node-en">Trigger: Prior to new bike launch or component revision</div>
           </div>
           <div class="arrow">↓</div>
-
+ 
           <!-- S1 & S2 Sub-grid -->
           <div class="sub-grid">
             <div class="sub-node blue">
@@ -450,28 +478,28 @@ body {
             </div>
           </div>
           <div class="arrow">↓</div>
-
+ 
           <!-- S3 Node -->
           <div class="node blue">
             <div class="node-zh">S3. 新建或異動資料統一放入 PIM </div>
             <div class="node-en">Centralize all bike geometry & BOM specifications into PIM </div>
           </div>
           <div class="arrow">↓</div>
-
+ 
           <!-- S4 Node -->
           <div class="node blue">
             <div class="node-zh">S4. DCF Team 查看與確認全維度資料</div>
             <div class="node-en">DCF Team reviews geometry, BOM, components & category impact</div>
           </div>
           <div class="arrow">↓</div>
-
+ 
           <!-- D1 Decision -->
           <div class="node amber">
             <div class="node-zh">D1. 判斷：資料 OK？</div>
             <div class="node-en">Decision: Is data verified and approved?</div>
           </div>
           <div class="arrow">↓</div>
-
+ 
           <!-- Branches D1: No / Yes -->
           <div class="branch">
             <div class="branch-col">
@@ -495,12 +523,12 @@ body {
               </div>
             </div>
           </div>
-
+ 
         </div>
       </div>
     </div>
   </div>
-
+ 
   <!-- ── Section 02: 依車種演算法進行有效騎乘幾何計算與驗證 ── -->
   <div class="section" id="s2">
     <div class="section-header" onclick="toggleSection('s2')">
@@ -513,13 +541,13 @@ body {
     <div class="section-body-wrapper">
       <div class="section-body">
         <div class="flow">
-
+ 
           <div class="node blue">
             <div class="node-zh">A1. 依車種分類選擇對應演算法</div>
             <div class="node-en">Road / Mountain Bike / All-Road & Sport / Gravel / Others</div>
           </div>
           <div class="arrow">↓</div>
-
+ 
           <div class="sub-grid">
             <div class="sub-node blue">
               <div class="node-zh">A2. 計算每一尺寸有效騎乘幾何</div>
@@ -531,13 +559,13 @@ body {
             </div>
           </div>
           <div class="arrow">↓</div>
-
+ 
           <div class="node blue">
             <div class="node-zh">A4. 比對舊版相同車型、相近車型與各尺寸幾何邏輯</div>
             <div class="node-en">Benchmark against legacy models & size progression logic</div>
           </div>
           <div class="arrow">↓</div>
-
+ 
           <div class="sub-grid">
             <div class="sub-node blue">
               <div class="node-zh">A5. 確認關鍵零配件幾何設定</div>
@@ -549,13 +577,13 @@ body {
             </div>
           </div>
           <div class="arrow">↓</div>
-
+ 
           <div class="node amber">
             <div class="node-zh">D2. 判斷：計算與驗證結果 OK？</div>
             <div class="node-en">Decision: Are calculations & validation results OK?</div>
           </div>
           <div class="arrow">↓</div>
-
+ 
           <div class="branch">
             <div class="branch-col">
               <div class="branch-label">[ 否 / FAILED ]</div>
@@ -572,12 +600,12 @@ body {
               </div>
             </div>
           </div>
-
+ 
         </div>
       </div>
     </div>
   </div>
-
+ 
   <!-- ── Section 03: API 製作、App 測試環境與驗證 ── -->
   <div class="section" id="s3">
     <div class="section-header" onclick="toggleSection('s3')">
@@ -590,31 +618,31 @@ body {
     <div class="section-body-wrapper">
       <div class="section-body">
         <div class="flow">
-
+ 
           <div class="node blue">
             <div class="node-zh">I1. API 廠商 (Hypersolid) 製作／更新 API</div>
             <div class="node-en">API vendor (Hypersolid) implements endpoints & calculation logic</div>
           </div>
           <div class="arrow">↓</div>
-
+ 
           <div class="node blue">
-            <div class="node-zh">I2. App 廠商 (BCT) 建立 Alpha 測試環境</div>
-            <div class="node-en">App vendor (BCT) deploys staging Alpha test build</div>
+            <div class="node-zh">I2. App 廠商 (BCT) 依已核准工單建立 Alpha 測試環境 <span class="link-tag">07</span></div>
+            <div class="node-en">App vendor (BCT) deploys Alpha build for approved tickets only (see 07)</div>
           </div>
           <div class="arrow">↓</div>
-
+ 
           <div class="node blue">
             <div class="node-zh">I3. DCF Team 執行 Alpha 測試</div>
             <div class="node-en">Data ingestion, algorithms, cockpit specs, UI & basic flow</div>
           </div>
           <div class="arrow">↓</div>
-
+ 
           <div class="node amber">
             <div class="node-zh">D3. 判斷：Alpha 測試結果 OK？</div>
             <div class="node-en">Decision: Alpha test results approved?</div>
           </div>
           <div class="arrow">↓</div>
-
+ 
           <div class="branch">
             <div class="branch-col">
               <div class="branch-label">[ 否 / REJECTED ]</div>
@@ -624,8 +652,8 @@ body {
                   <div class="node-en">API issue ➔ Fix ➔ Loop to I2</div>
                 </div>
                 <div class="sub-node coral">
-                  <div class="node-zh">I5. 回報 App 廠商(BCT)處理</div>
-                  <div class="node-en">App UI issue ➔ Fix ➔ Loop to I2</div>
+                  <div class="node-zh">I5. App 問題 ➔ 07 B1 開單，核准後修正 <span class="link-tag">07</span></div>
+                  <div class="node-en">App issue ➔ 07 B1 ➔ Approved fix ➔ Loop to I2</div>
                 </div>
                 <div class="sub-node coral" style="grid-column: 1 / -1;">
                   <div class="node-zh">I6. 退回 TM、CIC 修正 ➔ 回到 A1</div>
@@ -647,19 +675,19 @@ body {
             </div>
           </div>
           <div class="arrow">↓</div>
-
+ 
           <div class="node amber">
             <div class="node-zh">D4. 判斷：Beta 測試與驗證結果 OK？</div>
             <div class="node-en">Decision: Are Beta test & validation results approved?</div>
           </div>
           <div class="arrow">↓</div>
-
+ 
           <div class="branch">
             <div class="branch-col">
               <div class="branch-label">[ 否 / BETA FAILED ]</div>
               <div class="node coral">
-                <div class="node-zh">I9. 回到問題處理流程<br>修正後重新測試 ➔ 迴圈回 I2</div>
-                <div class="node-en">Issue resolution ➔ Retest · Loop back to I2</div>
+                <div class="node-zh">I9. 回到問題處理流程：App 問題經 07 核准後修正<br>➔ 迴圈回 I2 <span class="link-tag">07</span></div>
+                <div class="node-en">Issue resolution · App issues via 07 approval ➔ Retest · Loop back to I2</div>
               </div>
             </div>
             <div class="branch-col">
@@ -670,12 +698,12 @@ body {
               </div>
             </div>
           </div>
-
+ 
         </div>
       </div>
     </div>
   </div>
-
+ 
   <!-- ── Section 04: DCF Data Release Approval ── -->
   <div class="section" id="s4">
     <div class="section-header" onclick="toggleSection('s4')">
@@ -688,7 +716,7 @@ body {
     <div class="section-body-wrapper">
       <div class="section-body">
         <div class="flow">
-
+ 
           <div class="sub-grid">
             <div class="sub-node blue">
               <div class="node-zh">R2. Data Owner</div>
@@ -703,18 +731,18 @@ body {
               <div class="node-en">Confirms launch markets & commercial dates</div>
             </div>
             <div class="sub-node blue">
-              <div class="node-zh">R5. DCF Owner</div>
-              <div class="node-en">Authorizes official production release</div>
+              <div class="node-zh">R5. DCF Owner <span class="link-tag">07</span></div>
+              <div class="node-en">Authorizes production release · Confirms related BCT tickets are accepted</div>
             </div>
           </div>
           <div class="arrow">↓</div>
-
+ 
           <div class="node amber">
             <div class="node-zh">D5. 判斷：Release Approval 通過？</div>
             <div class="node-en">Decision: Release Approval fully signed off?</div>
           </div>
           <div class="arrow">↓</div>
-
+ 
           <div class="branch">
             <div class="branch-col">
               <div class="branch-label">[ 否 / REJECTED ]</div>
@@ -727,9 +755,13 @@ body {
                   <div class="node-zh">演算法/幾何 ➔ 退回 A1</div>
                   <div class="node-en">Algorithm flaw ➔ Return to A1</div>
                 </div>
-                <div class="sub-node coral" style="grid-column: 1 / -1;">
-                  <div class="node-zh">API／App 問題 ➔ 退回 I2</div>
-                  <div class="node-en">Technical bug ➔ Return to I2 testing</div>
+                <div class="sub-node coral">
+                  <div class="node-zh">API 問題 ➔ 退回 I2</div>
+                  <div class="node-en">API bug ➔ Return to I2 testing</div>
+                </div>
+                <div class="sub-node coral">
+                  <div class="node-zh">App 問題 ➔ 07 B1 <span class="link-tag">07</span></div>
+                  <div class="node-en">App bug ➔ 07 approval ➔ I2</div>
                 </div>
               </div>
             </div>
@@ -741,12 +773,12 @@ body {
               </div>
             </div>
           </div>
-
+ 
         </div>
       </div>
     </div>
   </div>
-
+ 
   <!-- ── Section 05: 發布至 DCF Production Database ── -->
   <div class="section" id="s5">
     <div class="section-header" onclick="toggleSection('s5')">
@@ -759,13 +791,13 @@ body {
     <div class="section-body-wrapper">
       <div class="section-body">
         <div class="flow">
-
+ 
           <div class="node teal">
             <div class="node-zh">P5A. 發布車架 Geometry、零配件、規則與版本</div>
             <div class="node-en">Write geometry, BOM, algorithm rules & release version to DB</div>
           </div>
           <div class="arrow">↓</div>
-
+ 
           <div class="sub-grid sub-grid-3">
             <div class="sub-node teal">
               <div class="node-zh">P5B. 生效日不得晚於上市日</div>
@@ -781,17 +813,17 @@ body {
             </div>
           </div>
           <div class="arrow">↓</div>
-
+ 
           <div class="node gray" style="background:#f1f5f9; border: 1px dashed var(--teal-600); max-width:480px;">
             <div class="node-zh" style="color:var(--teal-800);">正式上線 ➔ 進入 06｜上市後監控與持續維護</div>
             <div class="node-en" style="color:var(--teal-600);">Production deployment live · Transition to Post-Launch Operations</div>
           </div>
-
+ 
         </div>
       </div>
     </div>
   </div>
-
+ 
   <!-- ── Section 06: 上市後監控與持續維護 ── -->
   <div class="section" id="s6">
     <div class="section-header" onclick="toggleSection('s6')">
@@ -804,25 +836,25 @@ body {
     <div class="section-body-wrapper">
       <div class="section-body">
         <div class="flow">
-
+ 
           <div class="sub-grid">
             <div class="sub-node blue">
               <div class="node-zh">M1. 持續蒐集門市/Fitter回饋與例外案件</div>
               <div class="node-en">Field feedback, fitter reports, outliers & bugs</div>
             </div>
             <div class="sub-node blue">
-              <div class="node-zh">M2. 問題精準分類 (資料/幾何/演算法/App)</div>
-              <div class="node-en">Data, Geometry, BOM, Algorithm, API, App triage</div>
+              <div class="node-zh">M2. 問題精準分類 (資料/幾何/演算法/API/App)；App 再分 BCT 缺陷、維運、新功能</div>
+              <div class="node-en">Data, Geometry, BOM, Algorithm, API, App triage · App split into defect / maintenance / feature</div>
             </div>
           </div>
           <div class="arrow">↓</div>
-
+ 
           <div class="node amber">
             <div class="node-zh">D6. 判斷：是否需要更新／修正？</div>
             <div class="node-en">Decision: Is update, fix or tuning required?</div>
           </div>
           <div class="arrow">↓</div>
-
+ 
           <div class="branch">
             <div class="branch-col">
               <div class="branch-label">[ 否 / NO FIX NEEDED ]</div>
@@ -842,42 +874,231 @@ body {
                   <div class="node-zh">演算法/幾何問題 ➔ 回到 A1</div>
                   <div class="node-en">Algorithm flaw ➔ Loop back to A1</div>
                 </div>
-                <div class="sub-node coral" style="grid-column: 1 / -1;">
-                  <div class="node-zh">API／App／Web 問題 ➔ 回到 I2</div>
-                  <div class="node-en">Software/Cache bug ➔ Loop back to I2</div>
+                <div class="sub-node coral">
+                  <div class="node-zh">API／Web 問題 ➔ 回到 I2</div>
+                  <div class="node-en">API/Cache bug ➔ Loop back to I2</div>
+                </div>
+                <div class="sub-node coral">
+                  <div class="node-zh">App 問題 ➔ 07 B1 <span class="link-tag">07</span></div>
+                  <div class="node-en">App issue ➔ 07 change management</div>
                 </div>
               </div>
             </div>
           </div>
-
+ 
         </div>
       </div>
     </div>
   </div>
-
+ 
+  <!-- ── Section 07: BCT App 變更管理 ── -->
+  <div class="section" id="s7">
+    <div class="section-header" onclick="toggleSection('s7')">
+      <span class="section-num">07</span>
+      <span class="section-title">
+        BCT App 變更管理：核准、驗收與結算 <span class="en">/ App Vendor Change Management: Approval, Acceptance & Settlement</span>
+      </span>
+      <span class="section-chevron">▼</span>
+    </div>
+    <div class="section-body-wrapper">
+      <div class="section-body">
+        <div class="flow">
+ 
+          <!-- Trigger Node -->
+          <div class="node gray">
+            <div class="node-zh">觸發情境：I5／I9／D5／06 的 App 問題、硬體韌體改版、新功能需求<br>所有交由 BCT 的工作皆須經過本流程</div>
+            <div class="node-en">Trigger: App issues from I5 / I9 / D5 / 06, firmware changes, feature requests · All BCT work goes through this flow</div>
+          </div>
+          <div class="arrow">↓</div>
+ 
+          <!-- B1 -->
+          <div class="node blue">
+            <div class="node-zh">B1. 需求提出：開立 Jira 工單</div>
+            <div class="node-en">Single intake · Jira ticket with requester, reason, due date & linked release</div>
+          </div>
+          <div class="arrow">↓</div>
+ 
+          <!-- B2 -->
+          <div class="sub-grid">
+            <div class="sub-node blue">
+              <div class="node-zh">B2. 分類與排序：維運修正／硬體配合／資料發布配合／新功能</div>
+              <div class="node-en">Classify & prioritize: maintenance / firmware / data release / new feature</div>
+            </div>
+            <div class="sub-node blue">
+              <div class="node-zh">B3. BCT 估算工時並寫明驗收標準；判定是否為 BCT 自身缺陷</div>
+              <div class="node-en">BCT estimates hours & acceptance criteria · Vendor defect check</div>
+            </div>
+          </div>
+          <div class="arrow">↓</div>
+ 
+          <!-- G1 Decision -->
+          <div class="node amber">
+            <div class="node-zh">G1. 判斷：是否核准？（依類別與金額分級）</div>
+            <div class="node-en">Decision: Approved? Tiered by category & estimated cost</div>
+          </div>
+          <div class="arrow">↓</div>
+ 
+          <div class="branch">
+            <div class="branch-col">
+              <div class="branch-label">[ 否 / REJECTED ]</div>
+              <div class="node coral">
+                <div class="node-zh">B4. 退回 B2 調整範圍<br>或列入待辦清單</div>
+                <div class="node-en">Return to B2 to rescope · or move to backlog</div>
+              </div>
+            </div>
+            <div class="branch-col">
+              <div class="branch-label">[ 是 / APPROVED ]</div>
+              <div class="node teal">
+                <div class="node-zh">核准，進入 Sprint 排程 ↓</div>
+                <div class="node-en">Approved · Scheduled for next sprint</div>
+              </div>
+            </div>
+          </div>
+          <div class="arrow">↓</div>
+ 
+          <!-- G2 Decision -->
+          <div class="node amber">
+            <div class="node-zh">G2. 判斷：Sprint 任務清單與工時上限已書面確認？</div>
+            <div class="node-en">Decision: Sprint scope & hour cap confirmed in writing? · No confirmation, no work</div>
+          </div>
+          <div class="arrow">↓</div>
+ 
+          <!-- B5 -->
+          <div class="node blue">
+            <div class="node-zh">B5. BCT 開發並交付 Alpha 測試 ➔ 接回 03 I2、I3</div>
+            <div class="node-en">BCT develops & hands over to Alpha test (I2, I3)</div>
+          </div>
+          <div class="arrow">↓</div>
+ 
+          <!-- G3 Decision -->
+          <div class="node amber">
+            <div class="node-zh">G3. 判斷：Sprint 驗收通過？</div>
+            <div class="node-en">Decision: Sprint deliverables accepted against criteria?</div>
+          </div>
+          <div class="arrow">↓</div>
+ 
+          <div class="branch">
+            <div class="branch-col">
+              <div class="branch-label">[ 否 / CARRY-OVER ]</div>
+              <div class="node coral">
+                <div class="node-zh">B6. BCT 說明原因與剩餘工時<br>➔ 回到 G1 重新核准</div>
+                <div class="node-en">Reason & remaining hours ➔ Re-approval at G1</div>
+              </div>
+            </div>
+            <div class="branch-col">
+              <div class="branch-label">[ 是 / ACCEPTED ]</div>
+              <div class="node teal">
+                <div class="node-zh">B7. 簽署驗收單<br>工時列入結算 ↓</div>
+                <div class="node-en">Acceptance form signed · Hours eligible for settlement</div>
+              </div>
+            </div>
+          </div>
+          <div class="arrow">↓</div>
+ 
+          <!-- G4 Decision -->
+          <div class="node amber">
+            <div class="node-zh">G4. 判斷：月報與結算核對無誤？</div>
+            <div class="node-en">Decision: Monthly report & settlement reconciled?</div>
+          </div>
+          <div class="arrow">↓</div>
+ 
+          <div class="branch">
+            <div class="branch-col">
+              <div class="branch-label">[ 否 / ALERT ]</div>
+              <div class="node coral">
+                <div class="node-zh">B8. 明細不符或預算達上限 80%<br>➔ 通知主管調整優先序</div>
+                <div class="node-en">Mismatch or 80% budget used ➔ Escalate to management</div>
+              </div>
+            </div>
+            <div class="branch-col">
+              <div class="branch-label">[ 是 / RECONCILED ]</div>
+              <div class="node teal">
+                <div class="node-zh">B9. 人天明細＝驗收單<br>依合約半年結算 ➔ 財務付款</div>
+                <div class="node-en">Hours match acceptance · Semi-annual settlement ➔ Payment</div>
+              </div>
+            </div>
+          </div>
+          <div class="arrow">↓</div>
+ 
+          <div class="node gray" style="background:#f1f5f9; border: 1px dashed var(--teal-600); max-width:480px;">
+            <div class="node-zh" style="color:var(--teal-800);">上市後回饋與新需求 ➔ 循環回 B1</div>
+            <div class="node-en" style="color:var(--teal-600);">Feedback & new requests loop back to B1</div>
+          </div>
+ 
+          <!-- Approval tiers -->
+          <div class="flow-divider">核准權限 / APPROVAL TIERS · 金額門檻依公司權責規定</div>
+          <div class="sub-grid sub-grid-3">
+            <div class="sub-node amber">
+              <div class="node-zh">小額維運修正 ➔ 需求負責人</div>
+              <div class="node-en">Minor maintenance ➔ Product Owner</div>
+            </div>
+            <div class="sub-node amber">
+              <div class="node-zh">中額或硬體配合 ➔ DCF Owner</div>
+              <div class="node-en">Mid-size or firmware support ➔ DCF Owner</div>
+            </div>
+            <div class="sub-node amber">
+              <div class="node-zh">大額或任何新功能 ➔ 主管</div>
+              <div class="node-en">Large or any new feature ➔ Management</div>
+            </div>
+          </div>
+ 
+          <!-- Control rules -->
+          <div class="flow-divider">管控規則 / CONTROL RULES</div>
+          <div class="sub-grid">
+            <div class="sub-node blue">
+              <div class="node-zh">1. 沒有工單、沒有書面確認，不計費</div>
+              <div class="node-en">No ticket, no written confirmation, no billing</div>
+            </div>
+            <div class="sub-node blue">
+              <div class="node-zh">2. 核准權限依金額與類別分級</div>
+              <div class="node-en">Approval tiered by cost & category</div>
+            </div>
+            <div class="sub-node blue">
+              <div class="node-zh">3. 延續到下一個 sprint 的任務須重新核准</div>
+              <div class="node-en">Carry-over tasks require re-approval</div>
+            </div>
+            <div class="sub-node blue">
+              <div class="node-zh">4. BCT 自身缺陷的修正不另計費（待合約修訂）</div>
+              <div class="node-en">Vendor defect fixes are non-billable (pending contract amendment)</div>
+            </div>
+            <div class="sub-node blue">
+              <div class="node-zh">5. 緊急修正走快速通道，設工時上限，24 小時內補核准</div>
+              <div class="node-en">Hotfix fast track with hour cap · Approval within 24 hours</div>
+            </div>
+            <div class="sub-node blue">
+              <div class="node-zh">6. 預算消耗達年度上限 80% 時預警</div>
+              <div class="node-en">Alert at 80% of annual budget cap</div>
+            </div>
+          </div>
+ 
+        </div>
+      </div>
+    </div>
+  </div>
+ 
 </div>
-
+ 
 <div class="footer">
   DCF Data Governance, Validation & Release Cycle · Dynamic Cycling Fit · Standard Operating Procedure
 </div>
-
+ 
 <script>
 // 單一區塊展開/收合
 function toggleSection(id) {
   const el = document.getElementById(id);
   if (el) el.classList.toggle('collapsed');
 }
-
+ 
 // 全部展開
 function expandAllSections() {
   document.querySelectorAll('.section').forEach(sec => sec.classList.remove('collapsed'));
 }
-
+ 
 // 全部收合
 function collapseAllSections() {
   document.querySelectorAll('.section').forEach(sec => sec.classList.add('collapsed'));
 }
-
+ 
 // 點擊導覽列標籤跳轉並自動展開該區塊
 function jumpToSection(id) {
   const el = document.getElementById(id);
@@ -889,3 +1110,20 @@ function jumpToSection(id) {
 </script>
 </body>
 </html>
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Claude 已完成回覆
